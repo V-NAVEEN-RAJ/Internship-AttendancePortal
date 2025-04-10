@@ -24,6 +24,11 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+app.use(cors({
+  origin: 'https://cybernautattendanceportal-b1ivl5yqo-naveen-raj-vs-projects.vercel.app', // your Vercel frontend URL
+  credentials: true // if you're sending cookies or auth headers
+}));
+
 app.use(express.json()); // JSON parsing
 app.use(cookieParser()); // Parse cookies
 
