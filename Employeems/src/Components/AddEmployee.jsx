@@ -18,7 +18,7 @@ const AddEmployee = () => {
   useEffect(() => {
     // Fetch categories for the dropdown
     axios
-      .get("http://localhost:3000/admin/category")
+      .get("https://cybernaut-attendanceportal.onrender.com/admin/category")
       .then((result) => {
         if (result.data.Status) {
           setCategories(result.data.Result);
@@ -42,7 +42,7 @@ const AddEmployee = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/admin/employeeAdd",
+        "https://cybernaut-attendanceportal.onrender.com/admin/employeeAdd",
         formData,
         {
           headers: {

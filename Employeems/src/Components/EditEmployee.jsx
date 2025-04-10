@@ -16,7 +16,7 @@ const EditEmployee = () => {
 
   useEffect(() => {
     // Fetch employee details
-    axios.get(`http://localhost:3000/admin/employee/${id}`)
+    axios.get(`https://cybernaut-attendanceportal.onrender.com/admin/employee/${id}`)
       .then(result => {
         if (result.data.Status && result.data.Result.length > 0) {
           const emp = result.data.Result[0];
@@ -34,7 +34,7 @@ const EditEmployee = () => {
       });
 
     // Fetch categories
-    axios.get("http://localhost:3000/admin/category")
+    axios.get("https://cybernaut-attendanceportal.onrender.com/admin/category")
       .then(result => {
         if (result.data.Status) {
           setCategories(result.data.Result);
@@ -48,7 +48,7 @@ const EditEmployee = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    axios.put(`http://localhost:3000/admin/edit_employee/${id}`, employee)
+    axios.put(`https://cybernaut-attendanceportal.onrender.com/admin/edit_employee/${id}`, employee)
       .then(result => {
         if (result.data.Status) {
           setMessage({ type: "success", text: "Employee updated successfully" });

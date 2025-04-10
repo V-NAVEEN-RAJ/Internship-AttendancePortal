@@ -9,7 +9,7 @@ const AddCategory = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        axios.post('http://localhost:3000/admin/add_category', {category})
+        axios.post('https://cybernaut-attendanceportal.onrender.com/admin/add_category', {category})
         .then(result => {
             if(result.data.Status){
                 navigate('/dashboard/category')

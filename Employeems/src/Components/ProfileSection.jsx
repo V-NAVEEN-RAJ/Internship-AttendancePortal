@@ -7,7 +7,7 @@ const ProfileSection = ({ e = {}, isLoading, handleEditToggle }) => {
 
   useEffect(() => {
     // Update endpoint to match backend route
-    axios.get("http://localhost:3000/admin/category")
+    axios.get("https://cybernaut-attendanceportal.onrender.com/admin/category")
       .then(result => {
         if (result.data.Status) {
           const categoryMap = result.data.Result.reduce((acc, cat) => {
@@ -32,7 +32,7 @@ const ProfileSection = ({ e = {}, isLoading, handleEditToggle }) => {
     if (e?.image_blob) {
       return `data:image/jpeg;base64,${e.image_blob}`;
     }
-    return "http://localhost:3000/Images/default.png";
+    return "https://cybernaut-attendanceportal.onrender.com/Images/default.png";
   };
 
   if (isLoading) {
@@ -73,7 +73,7 @@ const ProfileSection = ({ e = {}, isLoading, handleEditToggle }) => {
                 }}
                 onError={(event) =>
                   (event.target.src =
-                    "http://localhost:3000/Images/default.png")
+                    "https://cybernaut-attendanceportal.onrender.com/Images/default.png")
                 }
               />
               <h5 className="my-3">{e?.employee_name || e?.name || "N/A"}</h5>

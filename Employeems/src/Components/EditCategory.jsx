@@ -10,7 +10,7 @@ const EditCategory = () => {
 
   useEffect(() => {
     // Ensure the API endpoint is correct
-    axios.get(`http://localhost:3000/admin/category/${id}`)
+    axios.get(`https://cybernaut-attendanceportal.onrender.com/admin/category/${id}`)
       .then(result => {
         if (result.data.Status && result.data.Result) {
           setCategoryName(result.data.Result.name); // Ensure 'Result' contains the category details
@@ -26,7 +26,7 @@ const EditCategory = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.put(`http://localhost:3000/admin/edit_category/${id}`, { name: categoryName })
+    axios.put(`https://cybernaut-attendanceportal.onrender.com/admin/edit_category/${id}`, { name: categoryName })
       .then(result => {
         if (result.data.Status) {
           setMessage({ type: "success", text: "Category updated successfully." });

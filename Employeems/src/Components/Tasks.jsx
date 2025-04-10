@@ -14,7 +14,7 @@ const Tasks = () => {
 
   const fetchTasks = () => {
     axios
-      .get("http://localhost:3000/employee/tasks")
+      .get("https://cybernaut-attendanceportal.onrender.com/employee/tasks")
       .then((result) => {
         if (result.data.Status) {
           setTasks(result.data.Data);
@@ -30,7 +30,7 @@ const Tasks = () => {
 
   const fetchEmployees = () => {
     axios
-      .get("http://localhost:3000/employee/employees")
+      .get("https://cybernaut-attendanceportal.onrender.com/employee/employees")
       .then((result) => {
         if (result.data.Status) {
           setEmployees(result.data.Data);
@@ -47,7 +47,7 @@ const Tasks = () => {
   const handleAddTask = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:3000/employee/tasks", newTask)
+      .post("https://cybernaut-attendanceportal.onrender.com/employee/tasks", newTask)
       .then((result) => {
         if (result.data.Status) {
           setMessage({ type: "success", text: "Task added successfully!" });
@@ -65,7 +65,7 @@ const Tasks = () => {
 
   const handleDeleteTask = (taskId) => {
     if (window.confirm('Are you sure you want to delete this completed task?')) {
-      axios.delete(`http://localhost:3000/admin/tasks/${taskId}`)
+      axios.delete(`https://cybernaut-attendanceportal.onrender.com/admin/tasks/${taskId}`)
         .then(result => {
           if (result.data.Status) {
             setMessage({ type: "success", text: "Task deleted successfully" });

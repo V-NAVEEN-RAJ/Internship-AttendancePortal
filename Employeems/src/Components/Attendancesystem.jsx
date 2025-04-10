@@ -57,7 +57,7 @@ function AttendancePortal() {
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/employee/employees");
+      const response = await axios.get("https://cybernaut-attendanceportal.onrender.com/employee/employees");
       console.log("Fetched employees:", response.data); // Debugging log
       if (response.data && response.data.Status && Array.isArray(response.data.Data)) {
         setEmployees(response.data.Data); // Use the 'Data' property from the response
@@ -73,7 +73,7 @@ function AttendancePortal() {
   const fetchAttendanceRecords = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("http://localhost:3000/attendance/records");
+      const response = await axios.get("https://cybernaut-attendanceportal.onrender.com/attendance/records");
       const records = response.data.Data || [];
 
       if (response.data.Message) {
@@ -116,7 +116,7 @@ function AttendancePortal() {
       status: newAttendance.attendance_status,
     };
 
-    fetch("http://localhost:3000/attendance/postattendance", {
+    fetch("https://cybernaut-attendanceportal.onrender.com/attendance/postattendance", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

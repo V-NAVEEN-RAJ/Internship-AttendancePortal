@@ -11,7 +11,7 @@ const SalaryRequests = () => {
 
   const fetchSalaryRequests = () => {
     axios
-      .get("http://localhost:3000/admin/salary_requests")
+      .get("https://cybernaut-attendanceportal.onrender.com/admin/salary_requests")
       .then((result) => {
         if (result.data.Status) {
           setRequests(result.data.Data);
@@ -27,7 +27,7 @@ const SalaryRequests = () => {
 
   const handleApprove = (requestId) => {
     axios
-      .post(`http://localhost:3000/admin/approve_salary_request/${requestId}`)
+      .post(`https://cybernaut-attendanceportal.onrender.com/admin/approve_salary_request/${requestId}`)
       .then((result) => {
         if (result.data.Status) {
           setMessage({ type: "success", text: "Salary request approved successfully!" });
@@ -44,7 +44,7 @@ const SalaryRequests = () => {
 
   const handleReject = (requestId) => {
     axios
-      .post(`http://localhost:3000/admin/reject_salary_request/${requestId}`)
+      .post(`https://cybernaut-attendanceportal.onrender.com/admin/reject_salary_request/${requestId}`)
       .then((result) => {
         if (result.data.Status) {
           setMessage({ type: "success", text: "Salary request rejected successfully!" });
@@ -62,7 +62,7 @@ const SalaryRequests = () => {
   const handleStatusChange = async (requestId, newStatus) => {
     try {
       const response = await axios.put(
-        `http://localhost:3000/admin/salary_request_status/${requestId}`,
+        `https://cybernaut-attendanceportal.onrender.com/admin/salary_request_status/${requestId}`,
         { status: newStatus },
         { headers: { 'Content-Type': 'application/json' } }
       );

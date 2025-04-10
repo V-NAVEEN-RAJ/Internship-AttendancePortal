@@ -16,7 +16,7 @@ function ReportSection() {
 
   const fetchEmployees = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/employee/employees"); // Ensure full URL
+      const response = await axios.get("https://cybernaut-attendanceportal.onrender.com/employee/employees"); // Ensure full URL
       if (response.data && response.data.Status === true && Array.isArray(response.data.Data)) {
         setEmployees(response.data.Data);
       } else {
@@ -31,7 +31,7 @@ function ReportSection() {
 
   const fetchReport = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/attendance/report", {
+      const response = await axios.get("https://cybernaut-attendanceportal.onrender.com/attendance/report", {
         params: { startDate, endDate, employeeId },
       });
 

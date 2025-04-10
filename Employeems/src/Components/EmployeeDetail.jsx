@@ -38,7 +38,7 @@ const EmployeeDetail = () => {
     }
     if (id) {
       setIsLoading(true);
-      axios.get(`http://localhost:3000/employee/detail/${id}`)
+      axios.get(`https://cybernaut-attendanceportal.onrender.com/employee/detail/${id}`)
         .then(result => {
           if (result.data.Status) {
             console.log('Employee data received:', result.data.Data);
@@ -95,8 +95,8 @@ const EmployeeDetail = () => {
 
   const fetchAttendanceDetails = () => {
     const promises = [
-      axios.get(`http://localhost:3000/attendance/details/${id}`),
-      axios.get(`http://localhost:3000/attendance/stats?date=${new Date().toISOString().split('T')[0]}`)
+      axios.get(`https://cybernaut-attendanceportal.onrender.com/attendance/details/${id}`),
+      axios.get(`https://cybernaut-attendanceportal.onrender.com/attendance/stats?date=${new Date().toISOString().split('T')[0]}`)
     ];
     Promise.all(promises)
       .then(([attendanceResult, statsResult]) => {
@@ -114,7 +114,7 @@ const EmployeeDetail = () => {
   };
 
   const fetchTasks = () => {
-    axios.get(`http://localhost:3000/employee/tasks/${id}`)
+    axios.get(`https://cybernaut-attendanceportal.onrender.com/employee/tasks/${id}`)
       .then(result => {
         if (result.data.Status) {
           setDailyTasks(result.data.Data);
@@ -144,7 +144,7 @@ const EmployeeDetail = () => {
     if (updatedEmployee.password) formData.append('password', updatedEmployee.password);
     if (updatedEmployee.photo) formData.append('image', updatedEmployee.photo);
 
-    axios.put(`http://localhost:3000/employee/edit/${id}`, formData, {
+    axios.put(`https://cybernaut-attendanceportal.onrender.com/employee/edit/${id}`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     })
     .then(result => {
@@ -154,7 +154,7 @@ const EmployeeDetail = () => {
           setEditMessage(null);
           setSelectedSection("profile");
           // Refresh employee data
-          axios.get(`http://localhost:3000/employee/detail/${id}`)
+          axios.get(`https://cybernaut-attendanceportal.onrender.com/employee/detail/${id}`)
             .then(result => {
               if (result.data.Status) {
                 setEmployee(result.data.Data);
@@ -176,9 +176,9 @@ const EmployeeDetail = () => {
       return `data:image/jpeg;base64,${e.image_blob}`;
     }
     if (e.image) {
-      return `http://localhost:3000/Images/${e.image}`;
+      return `https://cybernaut-attendanceportal.onrender.com/Images/${e.image}`;
     }
-    return "http://localhost:3000/Images/default.png";
+    return "https://cybernaut-attendanceportal.onrender.com/Images/default.png";
   };
 
   const handleEditToggle = () => {
@@ -211,7 +211,7 @@ const EmployeeDetail = () => {
 
   const fetchSalaryRequests = () => {
     axios
-      .get(`http://localhost:3000/employee/salary_requests/${id}`)
+      .get(`https://cybernaut-attendanceportal.onrender.com/employee/salary_requests/${id}`)
       .then((result) => {
         if (result.data.Status) {
           setSalaryRequests(result.data.Data);
@@ -235,7 +235,7 @@ const EmployeeDetail = () => {
       request_month: `${requestMonth}-01`
     };
     axios
-      .post("http://localhost:3000/employee/salary_request", requestData)
+      .post("https://cybernaut-attendanceportal.onrender.com/employee/salary_request", requestData)
       .then((result) => {
         if (result.data.Status) {
           setMessage({ type: "success", text: "Salary request submitted successfully" });
@@ -253,7 +253,7 @@ const EmployeeDetail = () => {
   };
 
   const handleReceiptStatus = (requestId, newStatus) => {
-    axios.put(`http://localhost:3000/admin/salary-receipt/${requestId}`, {
+    axios.put(`https://cybernaut-attendanceportal.onrender.com/admin/salary-receipt/${requestId}`, {
       receipt_status: newStatus
     })
     .then(result => {
@@ -271,7 +271,7 @@ const EmployeeDetail = () => {
   };
 
   const handleTaskStatusUpdate = (taskId, newStatus) => {
-    axios.put(`http://localhost:3000/admin/task-status/${taskId}`, {
+    axios.put(`https://cybernaut-attendanceportal.onrender.com/admin/task-status/${taskId}`, {
       status: newStatus,
       employee_id: id
     })
@@ -295,7 +295,7 @@ const EmployeeDetail = () => {
       return;
     }
   
-    axios.delete(`http://localhost:3000/employee/tasks/${taskId}`)
+    axios.delete(`https://cybernaut-attendanceportal.onrender.com/employee/tasks/${taskId}`)
       .then(result => {
         if (result.data.Status) {
           setMessage({ type: "success", text: "Task deleted successfully" });
@@ -320,7 +320,7 @@ const EmployeeDetail = () => {
   useEffect(() => {
     if (id) {
       setIsLoading(true);
-      axios.get(`http://localhost:3000/employee/detail/${id}`)
+      axios.get(`https://cybernaut-attendanceportal.onrender.com/employee/detail/${id}`)
         .then(result => {
           if (result.data.Status) {
             console.log('Employee data:', result.data.Data);
@@ -355,7 +355,7 @@ const EmployeeDetail = () => {
       return;
     }
   
-    axios.put(`http://localhost:3000/admin/salary-receipt-confirmation/${requestId}`, {
+    axios.put(`https://cybernaut-attendanceportal.onrender.com/admin/salary-receipt-confirmation/${requestId}`, {
       receipt_status: status,
       employee_id: id
     })
@@ -379,7 +379,7 @@ const EmployeeDetail = () => {
       return;
     }
   
-    axios.put(`http://localhost:3000/employee/salary-receipt/${requestId}`, {
+    axios.put(`https://cybernaut-attendanceportal.onrender.com/employee/salary-receipt/${requestId}`, {
       receipt_status: newStatus,
       employee_id: id
     })
@@ -402,7 +402,7 @@ const EmployeeDetail = () => {
       return;
     }
   
-    axios.put(`http://localhost:3000/employee/salary-receipt-update/${requestId}`, {
+    axios.put(`https://cybernaut-attendanceportal.onrender.com/employee/salary-receipt-update/${requestId}`, {
       receipt_status: status,
       employee_id: id
     })
@@ -757,7 +757,7 @@ const EmployeeDetail = () => {
                 className="rounded-circle border border-secondary"
                 style={{ width: "100px", height: "100px", objectFit: "cover" }}
                 onError={(event) => {
-                  event.target.src = "http://localhost:3000/Images/default.png";
+                  event.target.src = "https://cybernaut-attendanceportal.onrender.com/Images/default.png";
                 }}
               />
               <h5 className="mt-2">{e.name}</h5>

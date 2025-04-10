@@ -11,7 +11,7 @@ const Category = () => {
   }, []);
 
   const fetchCategories = () => {
-    axios.get('http://localhost:3000/admin/category')
+    axios.get('https://cybernaut-attendanceportal.onrender.com/admin/category')
       .then(result => {
         if (result.data.Status) {
           setCategory(result.data.Result);
@@ -22,7 +22,7 @@ const Category = () => {
 
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this category?")) {
-      axios.delete(`http://localhost:3000/admin/delete_category/${id}`)
+      axios.delete(`https://cybernaut-attendanceportal.onrender.com/admin/delete_category/${id}`)
         .then(result => {
           if (result.data.Status) {
             setMessage({ type: "success", text: "Category deleted successfully" });

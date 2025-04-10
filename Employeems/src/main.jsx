@@ -9,15 +9,15 @@ const getServerUrl = async () => {
   // Try ports 3000 through 3005
   for (let port = 3000; port <= 3005; port++) {
     try {
-      const response = await fetch(`http://localhost:${port}/api`);
+      const response = await fetch(`https://cybernaut-attendanceportal.onrender.com/`);
       if (response.ok) {
-        return `http://localhost:${port}`;
+        return `https://cybernaut-attendanceportal.onrender.com/`;
       }
     } catch (err) {
       continue;
     }
   }
-  return 'http://localhost:3000'; // Default fallback
+  return 'https://cybernaut-attendanceportal.onrender.com'; // Default fallback
 };
 
 // Configure axios

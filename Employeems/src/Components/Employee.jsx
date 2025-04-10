@@ -12,7 +12,7 @@ const Employee = () => {
 
   const fetchEmployees = () => {
     axios
-      .get("http://localhost:3000/admin/employee")
+      .get("https://cybernaut-attendanceportal.onrender.com/admin/employee")
       .then((result) => {
         if (result.data.Status) {
           setEmployee(result.data.Result);
@@ -26,7 +26,7 @@ const Employee = () => {
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this employee?")) {
       axios
-        .delete(`http://localhost:3000/admin/delete_employee/${id}`)
+        .delete(`https://cybernaut-attendanceportal.onrender.com/admin/delete_employee/${id}`)
         .then((result) => {
           if (result.data.Status) {
             setMessage({ type: "success", text: "Employee deleted successfully." });
@@ -80,12 +80,12 @@ const Employee = () => {
                       src={
                         e.image_blob
                           ? `data:image/jpeg;base64,${e.image_blob}`
-                          : "http://localhost:3000/Images/default.png"
+                          : "https://cybernaut-attendanceportal.onrender.com/Images/default.png"
                       }
                       className="employee_image"
                       alt={e.name}
                       onError={(event) => {
-                        event.target.src = "http://localhost:3000/Images/default.png";
+                        event.target.src = "https://cybernaut-attendanceportal.onrender.com/Images/default.png";
                       }}
                     />
                   </td>

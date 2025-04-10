@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-axios.defaults.baseURL = 'http://localhost:3000';
+axios.defaults.baseURL = 'https://cybernaut-attendanceportal.onrender.com';
 axios.defaults.withCredentials = true;
 
 // Add interceptor for error handling
