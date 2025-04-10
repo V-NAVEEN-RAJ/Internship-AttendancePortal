@@ -1,0 +1,250 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+.loginPage {
+    background-image: linear-gradient(to bottom right, #1e3c72, #2a5298);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginForm {
+    background-color: rgba(255, 255, 255, 0.95);
+    color: #333;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.loginForm h2 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #1e3c72;
+    margin-bottom: 20px;
+}
+
+.loginForm button {
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.loginForm button:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+/* Sidebar styles */
+.sidebar-item {
+    text-decoration: none;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+    font-weight: bold;
+}
+
+.sidebar-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(-5px);
+}
+
+/* Sidebar styles */
+.nav {
+  font-size: 1rem;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+  font-weight: bold;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(5px);
+}
+
+/* Employee image */
+.employee_image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.container {
+    font-family: sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1e3c72;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.main {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.section {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.form,
+.filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.form label,
+.filters label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Table styles */
+.table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.table th {
+    background-color: #1e3c72;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-size: 1rem;
+}
+
+.table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .loginForm {
+        width: 90%;
+        padding: 20px;
+    }
+
+    .sidebar-item {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    .employee_image {
+        width: 40px;
+        height: 40px;
+    }
+
+    .table th, .table td {
+        font-size: 0.85rem;
+        padding: 10px;
+    }
+
+    .btn {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+
+    .card-title {
+        font-size: 1rem;
+    }
+
+    .card-text {
+        font-size: 0.9rem;
+    }
+
+    .content {
+        margin-right: 0;
+        width: 100%;
+    }
+
+    nav {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+}
+
+@media (max-width: 576px) {
+    .loginForm {
+        padding: 15px;
+    }
+
+    .sidebar-item {
+        font-size: 0.8rem;
+        padding: 6px;
+    }
+
+    .employee_image {
+        width: 30px;
+        height: 30px;
+    }
+
+    .table th, .table td {
+        font-size: 0.8rem;
+        padding: 8px;
+    }
+
+    .btn {
+        font-size: 0.7rem;
+        padding: 5px 10px;
+    }
+
+    .card-title {
+        font-size: 0.9rem;
+    }
+
+    .card-text {
+        font-size: 0.8rem;
+    }
+
+    .nav-link {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+}
