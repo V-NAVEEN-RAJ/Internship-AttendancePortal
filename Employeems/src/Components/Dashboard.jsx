@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import logo from "../assets/logo.png"; // Ensure logo path is correct
 import "./style.css";
+import AdminManagement from './AdminManagement';
 
 const Dashboard = () => {
   const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -61,7 +62,7 @@ const Dashboard = () => {
             transition: "margin-right 0.3s ease",
           }}
         >
-          <Outlet />
+          <Outlet />  {/* Add this line to render nested routes */}
         </div>
 
         {/* Vertical Sidebar */}
@@ -90,6 +91,7 @@ const Dashboard = () => {
                 { path: "/dashboard/attendancesystem", text: "Attendance System" },
                 { path: "/dashboard/salary_requests", text: "Salary Requests" },
                 { path: "/dashboard/tasks", text: "Manage Tasks" }, // New menu item
+                { path: "/dashboard/admin-management", text: "Admin Management" }, // New menu item
               ].map((item, index) => (
                 <li className="nav-item mb-3" key={index}>
                   <Link

@@ -624,4 +624,100 @@ route.put("/task-status/:id", async (req, res) => {
   }
 });
 
+// Add new admin
+route.post("/add_admin", (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ Status: false, Error: "Email and password are required" });
+  }
+
+  // Check if admin already exists
+  const checkSql = "SELECT * FROM admin WHERE email = ?";
+  con.query(checkSql, [email], (checkErr, checkResult) => {
+    if (checkErr) {
+      console.error("Error checking admin:", checkErr);
+      return res.status(500).json({ Status: false, Error: "Database Error" });
+    }
+
+    if (checkResult.length > 0) {
+      return res.status(400).json({ Status: false, Error: "Admin with this email already exists" });
+    }
+
+    // Hash password and create admin
+    bcrypt.hash(password, 10, (hashErr, hashedPassword) => {
+      if (hashErr) {
+        console.error("Error hashing password:", hashErr);
+        return res.status(500).json({ Status: false, Error: "Password hashing failed" });
+      }
+
+      const sql = "INSERT INTO admin (email, password) VALUES (?, ?)";
+      con.query(sql, [email, hashedPassword], (err, result) => {
+        if (err) {
+          console.error("Error creating admin:", err);
+          return res.status(500).json({ Status: false, Error: "Failed to create admin" });
+        }
+        return res.json({ Status: true, Message: "Admin created successfully" });
+      });
+    });
+  });
+});
+
+// Update admin
+route.put("/update_admin/:id", (req, res) => {
+  const { id } = req.params;
+  const { email, password, currentPassword } = req.body;
+
+  if (!email || (!password && password !== undefined)) {
+    return res.status(400).json({ Status: false, Error: "Invalid input" });
+  }
+
+  // First verify current password if provided
+  if (password) {
+    const verifySQL = "SELECT password FROM admin WHERE id = ?";
+    con.query(verifySQL, [id], (verifyErr, verifyResult) => {
+      if (verifyErr) {
+        console.error("Error verifying admin:", verifyErr);
+        return res.status(500).json({ Status: false, Error: "Database Error" });
+      }
+
+      if (verifyResult.length === 0) {
+        return res.status(404).json({ Status: false, Error: "Admin not found" });
+      }
+
+      bcrypt.compare(currentPassword, verifyResult[0].password, (compareErr, match) => {
+        if (compareErr || !match) {
+          return res.status(401).json({ Status: false, Error: "Current password is incorrect" });
+        }
+
+        // Hash new password and update
+        bcrypt.hash(password, 10, (hashErr, hashedPassword) => {
+          if (hashErr) {
+            return res.status(500).json({ Status: false, Error: "Password hashing failed" });
+          }
+
+          const updateSQL = "UPDATE admin SET email = ?, password = ? WHERE id = ?";
+          con.query(updateSQL, [email, hashedPassword, id], (err, result) => {
+            if (err) {
+              console.error("Error updating admin:", err);
+              return res.status(500).json({ Status: false, Error: "Failed to update admin" });
+            }
+            return res.json({ Status: true, Message: "Admin updated successfully" });
+          });
+        });
+      });
+    });
+  } else {
+    // Update email only
+    const updateSQL = "UPDATE admin SET email = ? WHERE id = ?";
+    con.query(updateSQL, [email, id], (err, result) => {
+      if (err) {
+        console.error("Error updating admin:", err);
+        return res.status(500).json({ Status: false, Error: "Failed to update admin" });
+      }
+      return res.json({ Status: true, Message: "Admin updated successfully" });
+    });
+  }
+});
+
 export default route;

@@ -18,6 +18,7 @@ import ReportSection from './Components/ReportSection';
 import EditCategory from './Components/EditCategory'; // Import EditCategory component
 import SalaryRequests from './Components/SalaryRequests';
 import Tasks from './Components/Tasks'; // Import Tasks component
+import AdminManagement from './Components/AdminManagement'; // Import AdminManagement component
 
 function App() {
   return (
@@ -26,8 +27,8 @@ function App() {
         <Route path='/' element={<Start />} />  
         <Route path='/adminlogin' element={<Login />} />
         <Route path='/employee_login' element={<EmployeeLogin />} />
-        <Route path='employee_detail/:id' element={<EmployeeDetail />} />
-        <Route path='/dashboard' element={<Dashboard />}>
+        <Route path='/employee_detail/:id' element={<EmployeeDetail />} />
+        <Route path='/dashboard/*' element={<Dashboard />}>
           <Route index element={<Home />} />
           <Route path='employee' element={<Employee />} />
           <Route path='category' element={<Category />} />
@@ -35,11 +36,11 @@ function App() {
           <Route path='profile' element={<Profile />} />
           <Route path='add_category' element={<AddCategory />} />
           <Route path='add_employee' element={<AddEmployee />} />
-          <Route path='/dashboard/add_employee' element={<AddEmployee />} />
           <Route path='edit_employee/:id' element={<EditEmployee />} />
-          <Route path='edit_category/:id' element={<EditCategory />} /> {/* Add route for editing categories */}
+          <Route path='edit_category/:id' element={<EditCategory />} />
           <Route path='salary_requests' element={<SalaryRequests />} />
-          <Route path='tasks' element={<Tasks />} /> {/* New route for tasks */}
+          <Route path='tasks' element={<Tasks />} />
+          <Route path='admin-management' element={<AdminManagement />} />
         </Route>
         <Route path='/report' element={<ReportSection />} />
       </Routes>
