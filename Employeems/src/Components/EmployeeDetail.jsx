@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ProfileSection from "./ProfileSection";
+import NavBar from './NavBar';
 
 const EmployeeDetail = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -426,19 +427,11 @@ const EmployeeDetail = () => {
 
   return (
     <div className="d-flex flex-column">
-      <nav className="navbar navbar-dark bg-dark">
-        <div className="container-fluid">
-          <span className="navbar-brand mx-auto text-center fw-bold fs-4">
-            Employee Portal
-          </span>
-          <button
-            className="btn btn-dark"
-            onClick={() => setSidebarVisible(!isSidebarVisible)}
-          >
-            <i className="bi bi-list"></i>
-          </button>
-        </div>
-      </nav>
+      <NavBar 
+        title="Employee Portal"
+        onToggleSidebar={() => setSidebarVisible(!isSidebarVisible)}
+      />
+      
       <div className="d-flex">
         <div
           className="content w-100"

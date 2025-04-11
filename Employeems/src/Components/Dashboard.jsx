@@ -5,6 +5,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import logo from "../assets/logo.png"; // Ensure logo path is correct
 import "./style.css";
 import AdminManagement from './AdminManagement';
+import NavBar from './NavBar';
 
 const Dashboard = () => {
   const [isSidebarVisible, setSidebarVisible] = useState(false);
@@ -35,20 +36,11 @@ const Dashboard = () => {
 
   return (
     <div className="d-flex flex-column">
-      <nav className="navbar navbar-dark bg-dark">
-        <div className="container-fluid">
-          <span className="navbar-brand mx-auto text-center fw-bold fs-4">
-            Admin Dashboard
-          </span>
-          <button
-            className="btn btn-dark"
-            onClick={() => setSidebarVisible(!isSidebarVisible)}
-          >
-            <i className="bi bi-list"></i>
-          </button>
-        </div>
-      </nav>
-
+      <NavBar 
+        title="Admin Dashboard"
+        onToggleSidebar={() => setSidebarVisible(!isSidebarVisible)}
+      />
+      
       <div className="d-flex">
         {/* Main Content */}
         <div
