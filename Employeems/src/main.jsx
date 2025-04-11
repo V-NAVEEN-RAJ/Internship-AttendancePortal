@@ -9,7 +9,7 @@ const getServerUrl = async () => {
   // Try ports 3000 through 3005
   for (let port = 3000; port <= 3005; port++) {
     try {
-      const response = await fetch(`https://cybernaut-attendanceportal.onrender.com/`);
+      const response = await fetch(`https://cybernaut-attendanceportal.onrender.com/api`);
       if (response.ok) {
         return `https://cybernaut-attendanceportal.onrender.com/`;
       }
