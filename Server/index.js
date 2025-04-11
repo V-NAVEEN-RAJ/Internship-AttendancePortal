@@ -15,20 +15,23 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 
-
 const corsOptions = {
   origin: [
-    'http://localhost:5173',
-    'https://cybernautattendanceportal.vercel.app',
-    'https://cybernautattendanceportal-b1ivl5yqo-naveen-raj-vs-projects.vercel.app'
+    'http://localhost:5173', // Development URL
+    'https://cybernautattendanceportal.vercel.app', // Vercel Frontend URL
+    'https://cybernautattendanceportal-b1ivl5yqo-naveen-raj-vs-projects.vercel.app', // Another Vercel URL (if applicable)
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
-  exposedHeaders: ['set-cookie']
+  exposedHeaders: ['set-cookie'],
 };
 
-app.use(cors(corsOptions)); // ✅ only once!
+// Enable CORS with the defined options
+app.use(cors(corsOptions));
+
+// Handle preflight OPTIONS requests (for browsers to check CORS)
+app.options('*', cors(corsOptions));
 
 
 app.use(express.json()); // JSON parsing
