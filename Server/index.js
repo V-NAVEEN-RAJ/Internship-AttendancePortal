@@ -38,9 +38,7 @@ app.use("/admin", adminRouter);
 app.use("/employee", employeeRouter);
 app.use("/attendance", attendanceRouter);
 
-app.get("/api", (req, res) => {
-  res.json({ success: true, message: "This is an API for ERP system" });
-});
+
 
 app.get("/verify", (req, res) => {
   const token = req.cookies?.token; // Ensure cookies are being read properly
@@ -81,6 +79,10 @@ pool.on('error', (err) => {
 app.use((err, req, res, next) => {
   console.error('❌ Server Error:', err);
   res.status(500).json({ success: false, message: "Internal Server Error" });
+});
+
+app.get("/", (req, res) => {
+  res.json({ success: true, message: "This is an API for ERP system" });
 });
 
 app.listen(PORT, () => {
