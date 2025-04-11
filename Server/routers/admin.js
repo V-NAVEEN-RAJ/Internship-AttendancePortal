@@ -720,4 +720,41 @@ route.put("/update_admin/:id", (req, res) => {
   }
 });
 
+// Delete admin
+route.delete("/delete_admin/:id", async (req, res) => {
+  const { id } = req.params;
+  
+  // First check if this is the last admin
+  try {
+    const [adminCount] = await promisePool.query("SELECT COUNT(*) as count FROM admin");
+    if (adminCount[0].count <= 1) {
+      return res.status(400).json({
+        Status: false,
+        Error: "Cannot delete the last admin account"
+      });
+    }
+
+    // If not the last admin, proceed with deletion
+    const [result] = await promisePool.query("DELETE FROM admin WHERE id = ?", [id]);
+    
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        Status: false,
+        Error: "Admin not found"
+      });
+    }
+
+    return res.json({
+      Status: true,
+      Message: "Admin deleted successfully"
+    });
+  } catch (err) {
+    console.error("Error deleting admin:", err);
+    return res.status(500).json({
+      Status: false,
+      Error: "Failed to delete admin"
+    });
+  }
+});
+
 export default route;

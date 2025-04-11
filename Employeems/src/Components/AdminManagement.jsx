@@ -61,6 +61,26 @@ const AdminManagement = () => {
         }
     };
 
+    const handleDeleteAdmin = async (id) => {
+        if (!window.confirm('Are you sure you want to delete this admin?')) {
+            return;
+        }
+
+        try {
+            const result = await axios.delete(
+                `https://cybernaut-attendanceportal.onrender.com/admin/delete_admin/${id}`
+            );
+            if (result.data.Status) {
+                setMessage({ type: 'success', text: 'Admin deleted successfully' });
+                fetchAdmins();
+            } else {
+                setMessage({ type: 'error', text: result.data.Error });
+            }
+        } catch (error) {
+            setMessage({ type: 'error', text: error.response?.data?.Error || 'Failed to delete admin' });
+        }
+    };
+
     return (
         <div className="container mt-4">
             <h2 className="text-center mb-4">Admin Management</h2>
@@ -183,6 +203,7 @@ const AdminManagement = () => {
                             <tr>
                                 <th>ID</th>
                                 <th>Email</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -190,6 +211,14 @@ const AdminManagement = () => {
                                 <tr key={admin.id}>
                                     <td>{admin.id}</td>
                                     <td>{admin.email}</td>
+                                    <td>
+                                        <button 
+                                            className="btn btn-danger btn-sm"
+                                            onClick={() => handleDeleteAdmin(admin.id)}
+                                        >
+                                            <i className="bi bi-trash"></i> Delete
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
