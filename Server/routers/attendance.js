@@ -69,7 +69,7 @@ route.get("/report", (req, res) => {
 
 // Add attendance record
 route.post("/postattendance", (req, res) => {
-    const { employee_id, date_of_attendance, in_time, out_time, status } = req.body;
+    const { employee_id, date_of_attendance, in_time, status } = req.body;
 
     if (!employee_id || !date_of_attendance || !in_time || !status) {
         return res.status(400).json({ Status: false, Error: "Missing required fields" });
@@ -80,69 +80,105 @@ route.post("/postattendance", (req, res) => {
         return res.status(400).json({ Status: false, Error: "Invalid employee_id. Must be a positive integer." });
     }
 
-    const checkSql = `
-        SELECT * FROM attendance 
-        WHERE employee_id = ? AND date_of_attendance = ?
-    `;
-    con.query(checkSql, [employee_id, date_of_attendance], (checkErr, checkResult) => {
-        if (checkErr) {
-            console.error("Error checking duplicate attendance:", checkErr.message);
-            return res.status(500).json({ Status: false, Error: "Database Error: " + checkErr.message });
+    // First check if employee exists
+    const checkEmployeeSql = "SELECT id FROM employee WHERE id = ?";
+    con.query(checkEmployeeSql, [parsedEmployeeId], (empErr, empResult) => {
+        if (empErr) {
+            console.error("Error checking employee:", empErr.message);
+            return res.status(500).json({ Status: false, Error: "Database Error: " + empErr.message });
         }
 
-        if (checkResult.length > 0) {
-            return res.status(400).json({ Status: false, Error: "Attendance record already exists for this employee on the given date." });
+        if (empResult.length === 0) {
+            return res.status(400).json({ Status: false, Error: "Employee does not exist" });
         }
 
-        let final_status = "Absent";
-        if (status === "Present") {
-            const entryTime = new Date(`1970-01-01T${in_time}`);
-            const cutoffTime = new Date(`1970-01-01T09:45:00`);
-            final_status = entryTime <= cutoffTime ? "On-time" : "Late";
-        }
+        // Then check for duplicate attendance
+        const checkSql = `SELECT * FROM attendance WHERE employee_id = ? AND date_of_attendance = ?`;
+        con.query(checkSql, [parsedEmployeeId, date_of_attendance], (checkErr, checkResult) => {
+            if (checkErr) {
+                console.error("Error checking duplicate attendance:", checkErr.message);
+                return res.status(500).json({ Status: false, Error: "Database Error: " + checkErr.message });
+            }
 
-        const sql = `
-            INSERT INTO attendance (employee_id, date_of_attendance, in_time, out_time, status, final_status)
-            VALUES (?, ?, ?, ?, ?, ?)
-        `;
+            if (checkResult.length > 0) {
+                return res.status(400).json({ Status: false, Error: "Attendance record already exists for this employee on the given date." });
+            }
 
-        con.query(
-            sql,
-            [parsedEmployeeId, date_of_attendance, in_time, out_time, status, final_status],
-            (err, result) => {
+            let final_status = status === "Present" ? 
+                (new Date(`1970-01-01T${in_time}`) <= new Date(`1970-01-01T09:45:00`) ? "On-time" : "Late") 
+                : "Absent";
+
+            const sql = `
+                INSERT INTO attendance (employee_id, date_of_attendance, in_time, out_time, status, final_status)
+                VALUES (?, ?, ?, '', ?, ?)
+            `;
+
+            con.query(sql, [parsedEmployeeId, date_of_attendance, in_time, status, final_status], (err, result) => {
                 if (err) {
                     console.error("Error inserting attendance:", err.message);
                     return res.status(500).json({ Status: false, Error: "Database Error: " + err.message });
                 }
                 return res.json({ Status: true, Message: "Attendance recorded successfully" });
-            }
-        );
+            });
+        });
+    });
+});
+
+// Add new route specifically for updating out_time
+route.put("/update-out-time/:id", (req, res) => {
+    const { id } = req.params;
+    const { out_time } = req.body;
+
+    if (!out_time) {
+        return res.status(400).json({ Status: false, Error: "Out time is required" });
+    }
+
+    const updateSql = "UPDATE attendance SET out_time = ? WHERE id = ?";
+    
+    con.query(updateSql, [out_time, id], (err, result) => {
+        if (err) {
+            console.error("Error updating out time:", err);
+            return res.status(500).json({ Status: false, Error: "Database Error: " + err.message });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ Status: false, Error: "Attendance record not found" });
+        }
+
+        return res.json({ Status: true, Message: "Out time updated successfully" });
     });
 });
 
 // Edit attendance record
 route.put("/editattendance/:id", (req, res) => {
     const { id } = req.params;
-    const { in_time, out_time, status } = req.body;
+    const { out_time } = req.body;
 
-    let final_status = "Absent";
-    if (status === "Present") {
-        const entryTime = new Date(`1970-01-01T${in_time}`);
-        const cutoffTime = new Date(`1970-01-01T09:45:00`);
-        final_status = entryTime <= cutoffTime ? "On-time" : "Late";
+    if (!out_time) {
+        return res.status(400).json({ Status: false, Error: "Out time is required" });
     }
 
-    const sql = `
-        UPDATE attendance
-        SET in_time = ?, out_time = ?, status = ?, final_status = ?
-        WHERE id = ?
-    `;
-    con.query(sql, [in_time, out_time, status, final_status, id], (err, result) => {
-        if (err) {
-            console.error("Error updating attendance:", err);
+    // First check if record exists
+    const checkSql = "SELECT * FROM attendance WHERE id = ?";
+    con.query(checkSql, [id], (checkErr, checkResult) => {
+        if (checkErr) {
+            console.error("Error checking attendance:", checkErr);
             return res.status(500).json({ Status: false, Error: "Database Error" });
         }
-        return res.json({ Status: true, Message: "Attendance updated successfully" });
+
+        if (checkResult.length === 0) {
+            return res.status(404).json({ Status: false, Error: "Attendance record not found" });
+        }
+
+        // Update only the out_time
+        const updateSql = "UPDATE attendance SET out_time = ? WHERE id = ?";
+        con.query(updateSql, [out_time, id], (err, result) => {
+            if (err) {
+                console.error("Error updating out time:", err);
+                return res.status(500).json({ Status: false, Error: "Database Error: " + err.message });
+            }
+            return res.json({ Status: true, Message: "Out time updated successfully" });
+        });
     });
 });
 

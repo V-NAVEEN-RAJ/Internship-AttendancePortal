@@ -99,57 +99,75 @@ function AttendancePortal() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Debugging log to check the value of date_of_attendance
-    console.log("Submitting attendance with date_of_attendance:", newAttendance.attendance_date);
-
-    // Validate required fields
-    if (!newAttendance.employee_id || !newAttendance.attendance_date) {
-      setMessage({ type: "error", text: "Please fill in all required fields." });
-      return;
-    }
-
     const attendanceData = {
-      employee_id: newAttendance.employee_id,
-      date_of_attendance: newAttendance.attendance_date, // Ensure date is sent correctly
-      in_time: newAttendance.attendance_time || null,
-      out_time: newAttendance.out_time || null,
-      status: newAttendance.attendance_status,
+        employee_id: newAttendance.employee_id,
+        date_of_attendance: newAttendance.attendance_date,
+        in_time: newAttendance.attendance_time,
+        status: newAttendance.attendance_status
     };
 
     fetch("https://cybernaut-attendanceportal.onrender.com/attendance/postattendance", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(attendanceData),
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(attendanceData),
     })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((data) => {
-            throw new Error(data.Error || "API Error: " + response.statusText);
-          });
+    .then((response) => response.json())
+    .then((data) => {
+        if (data.Status) {
+            setMessage({ type: "success", text: "Attendance recorded successfully!" });
+            fetchAttendanceRecords();
+            setNewAttendance({
+                employee_id: "",
+                attendance_date: "",
+                attendance_time: "",
+                attendance_status: "Present",
+                final_status: "",
+            });
+        } else {
+            throw new Error(data.Error || "Failed to record attendance");
         }
-        return response.json();
-      })
-      .then((data) => {
-        setMessage({ type: "success", text: "Attendance recorded successfully!" });
-        fetchAttendanceRecords(); // Refresh the records
-
-        // Reset the form fields
-        setNewAttendance({
-          employee_id: "",
-          attendance_date: "", // Reset date field
-          attendance_time: "",
-          out_time: "",
-          attendance_status: "Present",
-          final_status: "",
-        });
-      })
-      .catch((error) => {
-        console.error("Error submitting attendance:", error.message); // Log error
+    })
+    .catch((error) => {
+        console.error("Error submitting attendance:", error);
         setMessage({ type: "error", text: error.message });
-      });
-  };
+    });
+};
+
+const handleUpdateOutTime = (recordId, currentOutTime) => {
+    const newOutTime = prompt("Enter out time (HH:mm):", currentOutTime || "");
+    
+    if (!newOutTime) return; // User cancelled or entered empty value
+    
+    // Validate time format
+    const timeRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+    if (!timeRegex.test(newOutTime)) {
+        setMessage({ type: "error", text: "Please enter time in HH:mm format" });
+        return;
+    }
+
+    axios.put(
+        `https://cybernaut-attendanceportal.onrender.com/attendance/update-out-time/${recordId}`,
+        { out_time: newOutTime },
+        { headers: { 'Content-Type': 'application/json' } }
+    )
+    .then(result => {
+        if (result.data.Status) {
+            setMessage({ type: "success", text: "Out time updated successfully!" });
+            fetchAttendanceRecords(); // Refresh the records
+        } else {
+            throw new Error(result.data.Error || "Failed to update out time");
+        }
+    })
+    .catch(err => {
+        console.error("Error updating out time:", err);
+        setMessage({ 
+            type: "error", 
+            text: err.response?.data?.Error || "Failed to update out time" 
+        });
+    });
+};
 
   const handleFilter = (filter) => {
     if (filter === "all") {
@@ -271,16 +289,6 @@ function AttendancePortal() {
             </div>
 
             <div className="mb-3">
-              <label className="form-label">Out Time:</label>
-              <input
-                type="time"
-                className="form-control"
-                value={newAttendance.out_time}
-                onChange={(e) => setNewAttendance({ ...newAttendance, out_time: e.target.value })}
-              />
-            </div>
-
-            <div className="mb-3">
               <label className="form-label">Status:</label>
               <select
                 className="form-select"
@@ -315,6 +323,7 @@ function AttendancePortal() {
                     <th>Out Time</th>
                     <th>Status</th>
                     <th>Final Status</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -324,14 +333,30 @@ function AttendancePortal() {
                         <td>{record.employee_name || "Unknown"}</td>
                         <td>{record.attendance_date}</td>
                         <td>{record.in_time || "N/A"}</td>
-                        <td>{record.out_time || "N/A"}</td>
+                        <td>
+                          {record.out_time || "Not logged"}
+                          <button
+                            className="btn btn-link btn-sm ms-2"
+                            onClick={() => handleUpdateOutTime(record.id, record.out_time)}
+                          >
+                            <i className="bi bi-pencil-square"></i>
+                          </button>
+                        </td>
                         <td>{record.status || "N/A"}</td>
                         <td>{record.final_status}</td>
+                        <td>
+                          <button
+                            className="btn btn-warning btn-sm"
+                            onClick={() => handleUpdateOutTime(record.id, record.out_time)}
+                          >
+                            Update Out Time
+                          </button>
+                        </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="6" className="text-center">No attendance records available</td>
+                      <td colSpan="7" className="text-center">No attendance records available</td>
                     </tr>
                   )}
                 </tbody>
