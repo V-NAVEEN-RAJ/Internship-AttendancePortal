@@ -50,7 +50,6 @@ const Dashboard = () => {
             padding: "20px",
             minHeight: "calc(100vh - 56px)",
             backgroundColor: "#f4f6f9",
-            color: "#000",
             transition: "margin-right 0.3s ease",
           }}
         >
@@ -61,7 +60,6 @@ const Dashboard = () => {
         {isSidebarVisible && (
           <div
             ref={sidebarRef}
-            className="bg-dark text-white p-3"
             style={{
               width: "300px",
               height: "100vh",
@@ -69,8 +67,11 @@ const Dashboard = () => {
               right: 0,
               top: 0,
               overflowY: "auto",
-              zIndex: 1030,
+              zIndex: 1020,
+              backgroundColor: "#1a237e",
+              boxShadow: "-2px 0 5px rgba(0,0,0,0.1)"
             }}
+            className="p-3"
           >
             <div className="text-center mb-4">
               <img src={logo} alt="Company Logo" style={{ height: "60px" }} />

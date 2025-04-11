@@ -1,3 +1,9 @@
+:root {
+  --primary-nav-color: #1a237e;
+  --nav-text-color: #ffffff;
+  --nav-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
 // ...existing styles...
 
 .sticky-top {
@@ -9,7 +15,19 @@
 
 .navbar {
   padding: 0.5rem 1rem;
-  background-color: #343a40 !important;
+  background-color: var(--primary-nav-color) !important;
+  color: var(--nav-text-color);
+}
+
+.navbar-brand, 
+.nav-link,
+.navbar .btn-link {
+  color: var(--nav-text-color) !important;
+}
+
+.sidebar-nav {
+  background-color: var(--primary-nav-color);
+  color: var(--nav-text-color);
 }
 
 // ...existing styles...
