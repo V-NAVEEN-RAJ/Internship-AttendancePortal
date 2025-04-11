@@ -38,7 +38,7 @@ const Login = () => {
         <div
             className="d-flex justify-content-center align-items-center vh-100 loginPage"
             style={{
-                backgroundImage: "url('/Images/background.jpg')", // Replace with your background image
+                backgroundImage: "white", // Replace with your background image
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
