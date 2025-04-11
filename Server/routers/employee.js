@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import fs from 'fs';
 import { fileURLToPath } from 'url';
+import cors from 'cors';
 
 // Get __dirname equivalent in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -21,6 +22,16 @@ const upload = multer({
         fileSize: 5 * 1024 * 1024 // 5MB limit
     }
 });
+
+const corsOptions = {
+  origin: ['http://localhost:5173', 'https://cybernautattendanceportal.vercel.app'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Content-Range', 'X-Content-Range']
+};
+
+route.use(cors(corsOptions));
 
 // Middleware to verify employee access
 const verifyEmployeeAccess = (req, res, next) => {

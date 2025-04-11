@@ -68,8 +68,8 @@ const Dashboard = () => {
               top: 0,
               overflowY: "auto",
               zIndex: 1020,
-              backgroundColor: "#1a237e",
-              boxShadow: "-2px 0 5px rgba(0,0,0,0.1)"
+              backgroundColor: "#2B3A55", // Professional darker shade
+              boxShadow: "-2px 0 5px rgba(0,0,0,0.2)"
             }}
             className="p-3"
           >
@@ -96,14 +96,6 @@ const Dashboard = () => {
                   </Link>
                 </li>
               ))}
-              <li className="nav-item">
-                <button
-                  className="btn btn-danger w-100"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </button>
-              </li>
             </ul>
           </div>
         )}

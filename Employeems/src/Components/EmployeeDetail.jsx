@@ -788,11 +788,6 @@ const EmployeeDetail = () => {
                   Salary Section
                 </button>
               </li>
-              <li className="nav-item">
-                <button className="btn btn-danger w-100" onClick={handleLogout}>
-                  Logout
-                </button>
-              </li>
             </ul>
           </div>
         )}

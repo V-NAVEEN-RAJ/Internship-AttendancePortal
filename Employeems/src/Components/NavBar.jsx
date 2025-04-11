@@ -6,8 +6,9 @@ const NavBar = ({ title, onToggleSidebar, showLogout = true }) => {
 
   return (
     <nav className="navbar sticky-top" style={{
-      backgroundColor: '#1a237e',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+      backgroundColor: '#212A3E', // Professional dark navy color
+      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+      color: 'white'
     }}>
       <div className="container-fluid">
         <span className="navbar-brand text-white mx-auto text-center fw-bold fs-4">
