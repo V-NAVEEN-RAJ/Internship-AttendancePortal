@@ -335,22 +335,20 @@ const handleUpdateOutTime = (recordId, currentOutTime) => {
                         <td>{record.in_time || "N/A"}</td>
                         <td>
                           {record.out_time || "Not logged"}
-                          <button
-                            className="btn btn-link btn-sm ms-2"
-                            onClick={() => handleUpdateOutTime(record.id, record.out_time)}
-                          >
-                            <i className="bi bi-pencil-square"></i>
-                          </button>
                         </td>
                         <td>{record.status || "N/A"}</td>
                         <td>{record.final_status}</td>
                         <td>
-                          <button
-                            className="btn btn-warning btn-sm"
-                            onClick={() => handleUpdateOutTime(record.id, record.out_time)}
-                          >
-                            Update Out Time
-                          </button>
+                          {record.out_time ? (
+                            <span className="badge bg-success">Attendance Recorded</span>
+                          ) : (
+                            <button
+                              className="btn btn-warning btn-sm"
+                              onClick={() => handleUpdateOutTime(record.id, record.out_time)}
+                            >
+                              Update Out Time
+                            </button>
+                          )}
                         </td>
                       </tr>
                     ))
