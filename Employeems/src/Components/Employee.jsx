@@ -74,8 +74,8 @@ const Employee = () => {
             {employee.length > 0 ? (
               employee.map((e) => (
                 <tr key={e.id}>
-                  <td>{e.name}</td>
-                  <td className="text-center">
+                  <td className="align-middle">{e.name}</td>
+                  <td className="text-center align-middle">
                     <img
                       src={
                         e.image_blob
@@ -89,11 +89,11 @@ const Employee = () => {
                       }}
                     />
                   </td>
-                  <td>{e.email}</td>
-                  <td>{e.address}</td>
-                  <td>{e.salary}</td>
-                  <td>{e.department}</td>
-                  <td>
+                  <td className="align-middle">{e.email}</td>
+                  <td className="align-middle">{e.address}</td>
+                  <td className="align-middle">{e.salary}</td>
+                  <td className="align-middle">{e.department}</td>
+                  <td className="align-middle">
                     <div className="d-flex gap-2 justify-content-center">
                       <Link
                         to={`/dashboard/edit_employee/${e.id}`}
