@@ -38,7 +38,7 @@ app.use("/admin", adminRouter);
 app.use("/employee", employeeRouter);
 app.use("/attendance", attendanceRouter);
 
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.json({ success: true, message: "This is an API for ERP system" });
 });
 
