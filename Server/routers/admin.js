@@ -11,24 +11,55 @@ const route = express.Router();
 // Admin login route
 route.post("/adminlogin", async (req, res) => {
   try {
-    const [rows] = await promisePool.query("SELECT * FROM admin WHERE email = ?", [req.body.email]);
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.json({ 
+        loginStatus: false, 
+        Error: "Email and password are required" 
+      });
+    }
+
+    const [rows] = await promisePool.query(
+      "SELECT * FROM admin WHERE email = ?", 
+      [email]
+    );
+
     if (rows.length === 0) {
-      return res.json({ loginStatus: false, Error: "Email not found" });
+      return res.json({ 
+        loginStatus: false, 
+        Error: "Email not found" 
+      });
     }
-    const isMatch = await bcrypt.compare(req.body.password, rows[0].password);
+
+    const isMatch = await bcrypt.compare(password, rows[0].password);
     if (!isMatch) {
-      return res.json({ loginStatus: false, Error: "Incorrect password" });
+      return res.json({ 
+        loginStatus: false, 
+        Error: "Incorrect password" 
+      });
     }
+
     const token = jwt.sign(
       { role: "admin", email: rows[0].email, id: rows[0].id },
       "jwt_secret_key",
       { expiresIn: "1d" }
     );
-    res.cookie("token", token);
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      maxAge: 24 * 60 * 60 * 1000 // 1 day
+    });
+
     return res.json({ loginStatus: true });
   } catch (err) {
     console.error("Login Error:", err);
-    return res.status(500).json({ loginStatus: false, Error: "Server error" });
+    return res.status(500).json({ 
+      loginStatus: false, 
+      Error: "Server error occurred" 
+    });
   }
 });
 

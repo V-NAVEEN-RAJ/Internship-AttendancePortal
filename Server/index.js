@@ -14,7 +14,10 @@ const corsOptions = {
   origin: ['http://localhost:5173', 'https://cybernautattendanceportal.vercel.app'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Content-Range', 'X-Content-Range'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 };
 
 // Basic middleware
@@ -66,12 +69,13 @@ pool.on('error', (err) => {
   console.error('Database error:', err);
 });
 
-// Update the error handler
+// Add global error handler
 app.use((err, req, res, next) => {
   console.error('Server Error:', err);
   res.status(500).json({ 
-    status: false, 
-    error: "Internal server error" 
+    Status: false, 
+    Error: "Internal server error",
+    Details: err.message 
   });
 });
 
