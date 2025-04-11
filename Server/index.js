@@ -12,7 +12,7 @@ import employeeRouter from "./routers/employee.js";
 import attendanceRouter from "./routers/attendance.js";
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 
 
